@@ -1,0 +1,85 @@
+.admin-users {
+  padding: 20px;
+}
+
+.users-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.users-filters input,
+.users-filters select {
+  padding: 6px 10px;
+}
+
+.status.active {
+  color: green;
+  font-weight: bold;
+}
+
+.status.inactive {
+  color: red;
+  font-weight: bold;
+}
+
+.user-table {
+  width: 90%;
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+/* ===============================
+   FIX ACTIONS COLUMN LAYOUT
+   =============================== */
+
+.admin-users td.actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  /* keep everything on one line */
+  white-space: nowrap;
+  flex-wrap: nowrap;
+
+  min-width: 100px;
+}
+
+/* prevent shrinking */
+.admin-users td.actions select,
+.admin-users td.actions button {
+  flex-shrink: 0;
+}
+
+.btn-small {
+  padding: 4px 8px;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.btn-small.danger {
+  background: #c0392b;
+  color: white;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 6px;
+}
+.modal.danger h3 {
+  color: #c0392b;
+}

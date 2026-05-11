@@ -1,0 +1,49 @@
+.admin-reviews {
+  padding: 20px;
+}
+
+.admin-reviews h1 {
+  margin-bottom: 20px;
+}
+
+.review-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background: #fff;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.review-rating {
+  color: #ff9800;
+}
+
+.review-comment {
+  margin: 10px 0;
+}
+
+.review-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #666;
+}
+
+.btn-danger {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-danger:hover {
+  opacity: 0.9;
+}

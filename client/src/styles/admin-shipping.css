@@ -1,0 +1,19 @@
+.admin-shipping {
+  padding: 20px;
+}
+
+.shipping-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.shipping-form input {
+  padding: 8px;
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+}

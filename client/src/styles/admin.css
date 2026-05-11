@@ -1,0 +1,123 @@
+/* ================= GLOBAL THEME ================= */
+:root {
+  --primary: #2196f3;
+  --primary-dark: #1976d2;
+  --bg-light: #f5f5f5;
+  --text-dark: #333;
+}
+
+/* ================= LAYOUT ================= */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-light);
+}
+
+/* ================= SIDEBAR ================= */
+.admin-sidebar {
+  width: 220px;
+  background: var(--primary); /* ✅ SAME AS USER */
+  color: #fff;
+  padding: 20px;
+}
+
+.admin-sidebar h2 {
+  margin-bottom: 20px;
+}
+
+.admin-sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.admin-sidebar a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.admin-sidebar a:hover {
+  text-decoration: underline;
+}
+
+/* ================= MAIN ================= */
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ================= NAVBAR ================= */
+.admin-navbar {
+  background: #fff;
+  padding: 15px 25px;
+  border-bottom: 1px solid #eee;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-name {
+  font-weight: 500;
+}
+
+/* ================= AVATAR ================= */
+.admin-avatar {
+  width: 35px;
+  height: 35px;
+  background: var(--primary); /* ✅ MATCH USER */
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.avatar-wrapper {
+  position: relative;
+}
+
+.avatar-menu {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.avatar-menu button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+/* ================= CONTENT ================= */
+.admin-content {
+  padding: 25px;
+}
+
+/* ================= BUTTONS (GLOBAL ADMIN) ================= */
+.admin-content button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.admin-content button:hover {
+  background: var(--primary-dark);
+}

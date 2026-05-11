@@ -1,0 +1,61 @@
+.admin-navbar {
+  height: 60px;
+  background: #ffffff;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.admin-navbar-left h2 {
+  margin: 0;
+}
+
+.admin-navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.role {
+  color: #777;
+  font-size: 12px;
+}
+
+.btn-logout {
+  background: #e74c3c;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-logout:hover {
+  opacity: 0.9;
+}

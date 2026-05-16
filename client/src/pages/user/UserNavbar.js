@@ -9,6 +9,9 @@ const UserNavbar = () => {
   const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
 
+  // ✅ MOBILE MENU
+  const [mobileMenu, setMobileMenu] = useState(false);
+
   const dropdownRef = useRef();
 
   useEffect(() => {
@@ -31,7 +34,7 @@ const UserNavbar = () => {
     };
   }, []);
 
-  /* ================= CLOSE DROPDOWN ON OUTSIDE CLICK ================= */
+  /* ================= CLOSE DROPDOWN ================= */
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -40,59 +43,109 @@ const UserNavbar = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   /* ================= LOGOUT ================= */
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user");
+
     setUser(null);
+
     navigate("/");
   };
 
-  /* ================= INITIALS ================= */
+  /* ================= USER INITIALS ================= */
   const getInitials = () => {
     if (!user) return "";
+
     return `${user.first_name?.[0] || ""}${user.last_name?.[0] || ""}`.toUpperCase();
   };
 
   return (
     <div>
 
-      {/* TOP BAR */}
+      {/* ================= TOP BAR ================= */}
       <div style={topBar}>
-        Welcome to Robotec - Your One-Stop Shop for arduino Gadgets!
+        Welcome to Robotec - Your One-Stop Shop for Arduino Gadgets!
       </div>
 
-      {/* NAVBAR */}
+      {/* ================= NAVBAR ================= */}
       <nav style={navStyle}>
 
-        {/* LOGO */}
-        <h2 style={{ margin: 0, cursor: "pointer" }} onClick={() => navigate("/")}>
-          Robotec
-        </h2>
+        {/* ================= LOGO ================= */}
+        <div
+          style={logoContainer}
+          onClick={() => navigate("/")}
+        >
+          <img
+            src="/robotec.jpeg"
+            alt="Robotec Logo"
+            style={logoImage}
+          />
+        </div>
 
-        {/* LINKS */}
-        <div style={navLinks}>
+        {/* ================= HAMBURGER ================= */}
+        <div
+          style={hamburger}
+          onClick={() => setMobileMenu(!mobileMenu)}
+        >
+          ☰
+        </div>
 
-          <Link to="/" style={linkStyle}>Home</Link>
-          <Link to="/shop" style={linkStyle}>Shop</Link>
+        {/* ================= NAV LINKS ================= */}
+        <div
+          style={{
+            ...navLinks,
+            ...(mobileMenu ? mobileNavActive : {}),
+          }}
+        >
 
-          <Link to="/cart" style={linkStyle}>
+          <Link
+            to="/"
+            style={linkStyle}
+            onClick={() => setMobileMenu(false)}
+          >
+            Home
+          </Link>
+
+          <Link
+            to="/shop"
+            style={linkStyle}
+            onClick={() => setMobileMenu(false)}
+          >
+            Shop
+          </Link>
+
+          <Link
+            to="/cart"
+            style={linkStyle}
+            onClick={() => setMobileMenu(false)}
+          >
             Cart ({cartCount})
           </Link>
 
-          {/* ================= GUEST ================= */}
+          {/* ================= GUEST USER ================= */}
           {!user && (
-            <Link to="/auth" style={loginBtn}>
+            <Link
+              to="/auth"
+              style={loginBtn}
+              onClick={() => setMobileMenu(false)}
+            >
               Login
             </Link>
           )}
 
-          {/* ================= USER ================= */}
+          {/* ================= LOGGED IN USER ================= */}
           {user && (
-            <div style={{ position: "relative" }} ref={dropdownRef}>
+            <div
+              style={{ position: "relative" }}
+              ref={dropdownRef}
+            >
 
               {/* AVATAR */}
               <div
@@ -105,23 +158,40 @@ const UserNavbar = () => {
               {/* DROPDOWN */}
               {open && (
                 <div style={dropdown}>
+
                   <p style={userName}>
                     {user.first_name} {user.last_name}
                   </p>
 
                   <hr />
 
-                  <div style={menuItem} onClick={() => navigate("/orders")}>
+                  <div
+                    style={menuItem}
+                    onClick={() => {
+                      navigate("/orders");
+                      setOpen(false);
+                    }}
+                  >
                     📦 My Orders
                   </div>
 
-                  <div style={menuItem} onClick={() => navigate("/change-password")}>
+                  <div
+                    style={menuItem}
+                    onClick={() => {
+                      navigate("/change-password");
+                      setOpen(false);
+                    }}
+                  >
                     🔑 Change Password
                   </div>
 
-                  <div style={menuItem} onClick={handleLogout}>
+                  <div
+                    style={menuItem}
+                    onClick={handleLogout}
+                  >
                     🚪 Logout
                   </div>
+
                 </div>
               )}
             </div>
@@ -150,15 +220,40 @@ const navStyle = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  padding: "15px 40px",
+  padding: "8px 20px",
   borderBottom: "1px solid #eee",
-  background: "#fff"
+  background: "#fff",
+  position: "relative",
+  flexWrap: "wrap"
+};
+
+const logoContainer = {
+  display: "flex",
+  alignItems: "center",
+  cursor: "pointer"
+};
+
+const logoImage = {
+  width: "300px",
+  height: "70px",
+  objectFit: "cover",
+  borderRadius: "8px",
+  maxWidth: "100%"
 };
 
 const navLinks = {
   display: "flex",
   gap: "25px",
   alignItems: "center"
+};
+
+const mobileNavActive = {
+  display: "flex",
+  flexDirection: "column",
+  width: "100%",
+  marginTop: "15px",
+  gap: "15px",
+  alignItems: "flex-start"
 };
 
 const linkStyle = {
@@ -211,4 +306,11 @@ const menuItem = {
   padding: "10px",
   cursor: "pointer",
   fontSize: "14px"
+};
+
+const hamburger = {
+  display: window.innerWidth <= 768 ? "block" : "none",
+  fontSize: "28px",
+  cursor: "pointer",
+  color: "#2196f3"
 };

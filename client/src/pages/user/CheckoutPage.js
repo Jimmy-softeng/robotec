@@ -28,7 +28,7 @@ const CheckoutPage = () => {
   const [popup, setPopup] = useState("");
   const [paymentInfo, setPaymentInfo] = useState(null);
 
-  /* ================= LOAD SHIPPING ================= */
+  /* ================= LOAD DATA ================= */
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -47,7 +47,10 @@ const CheckoutPage = () => {
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
   /* ================= SHIPPING ================= */
@@ -83,7 +86,6 @@ const CheckoutPage = () => {
 
       const orderId = res.data.order_id;
 
-      // 🔥 SHOW PAYMENT INSTRUCTIONS
       setPaymentInfo({
         orderId,
         total: total + Number(form.shipping_cost),
@@ -94,7 +96,7 @@ const CheckoutPage = () => {
     } catch (err) {
       setPopup(
         err?.response?.data?.message ||
-          "Failed to place order"
+        "Failed to place order"
       );
     } finally {
       setLoading(false);
@@ -103,14 +105,23 @@ const CheckoutPage = () => {
 
   return (
     <div style={styles.container}>
-      <h2>Checkout</h2>
+
+      <h2 style={styles.heading}>
+        Checkout
+      </h2>
 
       <div style={styles.grid}>
+
         {/* ================= FORM ================= */}
-        <form style={styles.form} onSubmit={handleSubmit}>
+        <form
+          style={styles.form}
+          onSubmit={handleSubmit}
+        >
+
           {!user && (
             <>
               <input
+                style={styles.input}
                 name="guest_name"
                 placeholder="Full Name"
                 required
@@ -118,6 +129,7 @@ const CheckoutPage = () => {
               />
 
               <input
+                style={styles.input}
                 name="guest_phone"
                 placeholder="Phone (07XXXXXXXX)"
                 required
@@ -125,6 +137,7 @@ const CheckoutPage = () => {
               />
 
               <input
+                style={styles.input}
                 name="guest_email"
                 placeholder="Email"
                 required
@@ -134,6 +147,7 @@ const CheckoutPage = () => {
           )}
 
           <input
+            style={styles.input}
             name="city"
             placeholder="City"
             required
@@ -141,6 +155,7 @@ const CheckoutPage = () => {
           />
 
           <input
+            style={styles.input}
             name="town"
             placeholder="Town"
             required
@@ -148,36 +163,57 @@ const CheckoutPage = () => {
           />
 
           <input
+            style={styles.input}
             name="address"
             placeholder="Address"
             required
             onChange={handleChange}
           />
 
-          <select required onChange={handleShippingChange}>
-            <option value="">Select Shipping Area</option>
+          <select
+            style={styles.input}
+            required
+            onChange={handleShippingChange}
+          >
+            <option value="">
+              Select Shipping Area
+            </option>
+
             {shippingOptions.map((opt) => (
-              <option key={opt.id} value={opt.id}>
+              <option
+                key={opt.id}
+                value={opt.id}
+              >
                 {opt.area_name} - KES {opt.cost}
               </option>
             ))}
           </select>
 
-          <button style={styles.button} disabled={loading}>
+          <button
+            style={styles.button}
+            disabled={loading}
+          >
             {loading ? "Processing..." : "Place Order"}
           </button>
         </form>
 
         {/* ================= SUMMARY ================= */}
         <div style={styles.summary}>
+
           <h3>Order Summary</h3>
 
           {cartItems.map((item) => (
-            <div key={item.id} style={styles.item}>
+            <div
+              key={item.id}
+              style={styles.item}
+            >
               <span>
                 {item.name} x {item.quantity}
               </span>
-              <span>KES {item.price * item.quantity}</span>
+
+              <span>
+                KES {item.price * item.quantity}
+              </span>
             </div>
           ))}
 
@@ -193,41 +229,76 @@ const CheckoutPage = () => {
             <span>KES {form.shipping_cost}</span>
           </div>
 
-          <div style={styles.total}>
+          <div style={styles.totalFinal}>
             <strong>Total:</strong>
             <span>
               KES {total + Number(form.shipping_cost)}
             </span>
           </div>
+
         </div>
       </div>
 
       {/* ================= PAYMENT MODAL ================= */}
       {paymentInfo && (
         <div style={styles.overlay}>
-          <div style={styles.modal}>
-            <h3>M-Pesa Payment Instructions</h3>
 
-            <p><strong>Order ID:</strong> {paymentInfo.orderId}</p>
-            <p><strong>Amount:</strong> KES {paymentInfo.total}</p>
+          <div style={styles.modal}>
+
+            <h3 style={styles.modalTitle}>
+              M-Pesa Payment Instructions
+            </h3>
+
+            <div style={styles.paymentBox}>
+              <p>
+                <strong>Order ID:</strong>{" "}
+                {paymentInfo.orderId}
+              </p>
+
+              <p>
+                <strong>Amount:</strong>{" "}
+                KES {paymentInfo.total}
+              </p>
+            </div>
 
             <hr />
 
-            <p>1. Go to M-Pesa</p>
-            <p>2. Select <strong>Lipa na M-Pesa</strong></p>
-            <p>3. Select <strong>Paybill</strong></p>
-            <p>
-              4. Business Number:{" "}
-              <strong>{settings?.paybill_number || "123456"}</strong>
-            </p>
-            <p>
-              5. Account Number:{" "}
-              <strong>{paymentInfo.orderId}</strong>
-            </p>
-            <p>6. Enter Amount and PIN</p>
+            <div style={styles.instructions}>
+              <p>1. Open M-Pesa</p>
 
-            <p style={{ marginTop: "10px", color: "green" }}>
-              After payment, your order will be confirmed shortly.
+              <p>
+                2. Select{" "}
+                <strong>Lipa na M-Pesa</strong>
+              </p>
+
+              <p>
+                3. Select{" "}
+                <strong>Buy Goods & Services</strong>
+              </p>
+
+              <p>
+                4. Enter Till Number:
+              </p>
+
+              <div style={styles.tillBox}>
+                {settings?.till_number || "4315116"}
+              </div>
+
+              <p>
+                5. Enter Amount:
+                <strong>
+                  {" "}KES {paymentInfo.total}
+                </strong>
+              </p>
+
+              <p>
+                6. Confirm and enter PIN
+              </p>
+            </div>
+
+            <p style={styles.successText}>
+              After payment, your order will
+              be confirmed shortly.
             </p>
 
             <button
@@ -239,6 +310,7 @@ const CheckoutPage = () => {
             >
               Done
             </button>
+
           </div>
         </div>
       )}
@@ -248,12 +320,17 @@ const CheckoutPage = () => {
         <div style={styles.overlay}>
           <div style={styles.modal}>
             <p>{popup}</p>
-            <button onClick={() => setPopup("")}>
+
+            <button
+              style={styles.button}
+              onClick={() => setPopup("")}
+            >
               OK
             </button>
           </div>
         </div>
       )}
+
     </div>
   );
 };
@@ -264,60 +341,145 @@ export default CheckoutPage;
 
 const styles = {
   container: {
-    padding: "40px",
+    padding: "20px",
+    maxWidth: "1200px",
+    margin: "0 auto",
+  },
+
+  heading: {
+    marginBottom: "20px",
   },
 
   grid: {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "30px",
-    marginTop: "20px",
+    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+    gap: "25px",
   },
 
   form: {
     display: "flex",
     flexDirection: "column",
-    gap: "10px",
+    gap: "15px",
+    background: "#fff",
+    padding: "20px",
+    border: "1px solid #ddd",
+    borderRadius: "10px",
+  },
+
+  input: {
+    padding: "12px",
+    borderRadius: "6px",
+    border: "1px solid #ccc",
+    fontSize: "15px",
+    width: "100%",
+    boxSizing: "border-box",
   },
 
   button: {
     background: "#2196f3",
     color: "#fff",
-    padding: "10px",
+    padding: "12px",
     border: "none",
+    borderRadius: "6px",
     cursor: "pointer",
+    fontWeight: "bold",
+    fontSize: "15px",
   },
 
   summary: {
     border: "1px solid #ddd",
     padding: "20px",
+    borderRadius: "10px",
+    background: "#fff",
+    height: "fit-content",
   },
 
   item: {
     display: "flex",
     justifyContent: "space-between",
-    marginBottom: "10px",
+    gap: "10px",
+    marginBottom: "12px",
+    paddingBottom: "12px",
+    borderBottom: "1px solid #eee",
+    fontSize: "14px",
   },
 
   total: {
     display: "flex",
     justifyContent: "space-between",
-    marginTop: "10px",
+    marginTop: "12px",
   },
 
+  totalFinal: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: "15px",
+    fontSize: "18px",
+    fontWeight: "bold",
+    color: "#2196f3",
+  },
+
+  /* ================= OVERLAY FIX ================= */
   overlay: {
     position: "fixed",
     inset: 0,
-    background: "rgba(0,0,0,0.4)",
+    background: "rgba(0,0,0,0.5)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    padding: "15px",
+    zIndex: 999,
   },
 
+  /* ================= MODAL FIX (IMPORTANT) ================= */
   modal: {
     background: "#fff",
     padding: "20px",
+    borderRadius: "10px",
+    width: "100%",
+    maxWidth: "420px",
+
+    /* 🔥 FIX SCROLL ISSUE */
+    maxHeight: "90vh",
+    overflowY: "auto",
+
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    boxSizing: "border-box",
+  },
+
+  modalTitle: {
+    marginTop: 0,
+    marginBottom: "10px",
+    color: "#2196f3",
+  },
+
+  paymentBox: {
+    background: "#f5f9ff",
+    padding: "12px",
     borderRadius: "6px",
-    width: "350px",
+  },
+
+  instructions: {
+    fontSize: "14px",
+    lineHeight: "1.6",
+  },
+
+  tillBox: {
+    background: "#2196f3",
+    color: "#fff",
+    textAlign: "center",
+    padding: "12px",
+    borderRadius: "8px",
+    fontSize: "22px",
+    fontWeight: "bold",
+    margin: "10px 0",
+  },
+
+  successText: {
+    marginTop: "10px",
+    color: "green",
+    fontWeight: "500",
   },
 };

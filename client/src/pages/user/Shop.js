@@ -28,7 +28,17 @@ const Shop = () => {
 
   /* ================= ADD TO CART ================= */
   const handleAddToCart = (product) => {
-    addToCart(product);
+
+    // ✅ FIXED IMAGE
+    const cartProduct = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image_url, // ✅ IMPORTANT FIX
+      quantity: 1,
+    };
+
+    addToCart(cartProduct);
 
     setPopup(`${product.name} added to cart ✅`);
 
@@ -37,28 +47,49 @@ const Shop = () => {
     }, 2000);
   };
 
-  if (loading) return <p style={{ padding: "20px" }}>Loading products...</p>;
+  if (loading) {
+    return (
+      <p style={{ padding: "20px" }}>
+        Loading products...
+      </p>
+    );
+  }
 
   return (
     <div style={styles.container}>
-      <h1>Shop</h1>
+
+      <h1 style={styles.heading}>
+        Shop
+      </h1>
 
       {products.length === 0 ? (
         <p>No products available.</p>
       ) : (
         <div style={styles.grid}>
+
           {products.map((p) => (
-            <div key={p.id} style={styles.card}>
+            <div
+              key={p.id}
+              style={styles.card}
+            >
+
               <img
                 src={p.image_url || "/placeholder.png"}
                 alt={p.name}
                 style={styles.image}
               />
 
-              <h3>{p.name}</h3>
-              <p style={styles.category}>{p.category}</p>
+              <h3 style={styles.productName}>
+                {p.name}
+              </h3>
 
-              <p style={styles.price}>KES {p.price}</p>
+              <p style={styles.category}>
+                {p.category}
+              </p>
+
+              <p style={styles.price}>
+                KES {Number(p.price).toLocaleString()}
+              </p>
 
               <button
                 style={styles.button}
@@ -66,23 +97,29 @@ const Shop = () => {
               >
                 Add to Cart
               </button>
+
             </div>
           ))}
+
         </div>
       )}
 
       {/* ================= POPUP ================= */}
       {popup && (
         <div style={styles.popup}>
-          {popup}
+
+          <span>{popup}</span>
+
           <button
             style={styles.popupBtn}
             onClick={() => navigate("/cart")}
           >
             View Cart
           </button>
+
         </div>
       )}
+
     </div>
   );
 };
@@ -94,50 +131,69 @@ export default Shop;
 const styles = {
   container: {
     padding: "20px",
+    maxWidth: "1400px",
+    margin: "0 auto",
+  },
+
+  heading: {
+    marginBottom: "20px",
   },
 
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
     gap: "20px",
-    marginTop: "20px",
   },
 
   card: {
-    border: "1px solid #ddd",
+    border: "1px solid #e0e0e0",
     padding: "15px",
-    borderRadius: "8px",
-    textAlign: "center",
+    borderRadius: "10px",
     background: "#fff",
+    textAlign: "center",
+    transition: "0.3s",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
   },
 
   image: {
     width: "100%",
-    height: "150px",
+    height: "200px",
     objectFit: "cover",
-    marginBottom: "10px",
+    borderRadius: "8px",
+    marginBottom: "12px",
+  },
+
+  productName: {
+    marginBottom: "8px",
+    fontSize: "18px",
   },
 
   category: {
     color: "#777",
     fontSize: "14px",
+    marginBottom: "10px",
   },
 
   price: {
     fontWeight: "bold",
-    margin: "10px 0",
+    fontSize: "18px",
+    marginBottom: "15px",
+    color: "#2196f3",
   },
 
   button: {
     background: "#2196f3",
     color: "#fff",
-    padding: "8px 12px",
+    padding: "10px 15px",
     border: "none",
     cursor: "pointer",
-    borderRadius: "4px",
+    borderRadius: "5px",
+    width: "100%",
+    fontWeight: "bold",
   },
 
   /* ================= POPUP ================= */
+
   popup: {
     position: "fixed",
     bottom: "20px",
@@ -151,14 +207,16 @@ const styles = {
     alignItems: "center",
     gap: "10px",
     zIndex: 999,
+    flexWrap: "wrap",
   },
 
   popupBtn: {
     background: "#fff",
     color: "#4caf50",
     border: "none",
-    padding: "5px 8px",
+    padding: "6px 10px",
     cursor: "pointer",
     borderRadius: "4px",
+    fontWeight: "bold",
   },
 };
